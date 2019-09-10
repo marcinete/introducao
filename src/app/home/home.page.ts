@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router, NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -6,18 +7,19 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  nome: string = "Marcinete";
+  nome = "";
   cor = "primary";
   humor = "sad";
+  sexo = "";
   checked_humor = false;
 
 
-  constructor() { }
+  constructor(private router: Router) { }
   
   trocarCor(): void {
     console.log('Chamou trocarCor!');
     if (this.cor == "primary") {
-      this.cor = "danger";
+    this.cor = "danger";
     }
     else if(this.cor == "danger") {
     this.cor = "success";
@@ -31,7 +33,6 @@ export class HomePage {
   mudaHumor(): void {
     this.checked_humor = !this.checked_humor;
     console.log("Chamou mudaHumor!");
-    console.log(this.checked_humor)
     if (this.checked_humor == true) {
       this.humor = "happy";
     } else {
@@ -39,5 +40,23 @@ export class HomePage {
     }
 
   }
-
+  selecionaSexo(event): void{
+    console.log(event.detail.value);
+    this.sexo = event.detail.value;
+  }
+  defineNome(event): void {
+    console.log(event.detail.value);
+    this.nome = event.detail.value;
+  }
+  irParaDetalhes(){
+    let extras: NavigationExtras = {
+      queryParams: {
+      'nome': this.nome,
+      'humor': this.humor,
+      'sexo': this.sexo,
+      'cor': this.cor
+    }
+  };
+    this.router.navigate(['/detalhes']); 
+  }
 }
